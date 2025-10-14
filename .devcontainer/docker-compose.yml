@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  flutter:
+    build: .
+    tty: true
+    platform: linux/x86_64
+    user: "developer"
+    volumes:
+      - ..:/home/developer/workspace:cached
+    ports:
+      - "5901:5901"
+      - "5554:5554"
+      - "5555:5555"
+    entrypoint:
+      - /home/developer/workspace/.devcontainer/start-vnc.sh

@@ -1,16 +1,8 @@
-# text_input_app
+# flutter_container2025
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```
+VS Code Dev Containers機能とDockerを用いて、Flutter LinuxデスクトップアプリをVNC経由でGUI表示・開発できる環境を構築できるリポジトリテンプレートです。
+必要なアプリをインストールして、このリポジトリをパソコンにクローンするだけで、仮想LinuxでのFlutterアプリを作成・実行できる環境が整います。
+詳しくは以下の手順書に従ってください。
+```
+[Flutter_Linux_VNC_環境構築手順書.md](./Flutter_Linux_VNC_環境構築手順書.md)
