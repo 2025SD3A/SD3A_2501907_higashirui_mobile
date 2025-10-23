@@ -25,12 +25,11 @@ class TextInputWidget extends StatefulWidget {
 
 class TextInputWidgetState extends State {
   final _controller = TextEditingController();
-  List todoList = ['name'];
+  List todoList = [];
 
   @override
   void initState() {
     super.initState();
-    _controller.text = '初期値が入っています';
   }
 
   @override
@@ -38,7 +37,7 @@ class TextInputWidgetState extends State {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(165, 190, 215, 1.0),
       appBar: AppBar(
-        title: const Text('Text Input Sample'),
+        title: const Text('Todo App'),
       ),
       body: ListView.builder(
           itemCount: todoList.length + 1,
@@ -61,6 +60,9 @@ class TextInputWidgetState extends State {
 
   Widget createTodoCard(String title) {
     return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
       margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
       child: Column(
         mainAxisSize: MainAxisSize.max,
@@ -77,11 +79,17 @@ class TextInputWidgetState extends State {
                 },
                 child: const Text('完了'),
               ),
+              const SizedBox(
+                width: 10.0,
+              ),
               ElevatedButton(
                 onPressed: () {
                   //削除したときの処理
                 },
                 child: const Text('削除'),
+              ),
+              const SizedBox(
+                width: 10.0,
               )
             ],
           )
@@ -92,21 +100,40 @@ class TextInputWidgetState extends State {
 
   Widget createTextArea() {
     return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
       margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-      child: TextField(
-        controller: _controller,
-        decoration: const InputDecoration(hintText: '入力してください'),
-        onChanged: (String value) {
-          print(value);
-        },
-        onSubmitted: (String value) {
-          setState(() {
-            if (value.isEmpty == false) {
-              todoList.add(value);
-              _controller.clear();
-            }
-          });
-        },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: TextField(
+              controller: _controller,
+              decoration: const InputDecoration(hintText: '入力してください'),
+              onChanged: (String value) {
+                print(value);
+              },
+              onSubmitted: (String value) {
+                setState(() {
+                  if (value.isEmpty == false) {
+                    todoList.add(value);
+                    _controller.clear();
+                  }
+                });
+              },
+            ),
+          ),
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+            child: ElevatedButton(
+              onPressed: () {},
+              child: const Text('カードを追加する'),
+            ),
+          )
+        ],
       ),
     );
   }
