@@ -20,10 +20,10 @@ class TextInputWidget extends StatefulWidget {
   const TextInputWidget({super.key});
 
   @override
-  State createState() => TextInputWidgetState();
+  State<TextInputWidget> createState() => _TextInputWidgetState();
 }
 
-class TextInputWidgetState extends State {
+class _TextInputWidgetState extends State<TextInputWidget> {
   final _controller = TextEditingController();
   List todoList = [];
 
@@ -37,18 +37,19 @@ class TextInputWidgetState extends State {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(165, 190, 215, 1.0),
       appBar: AppBar(
-        title: const Text('Todo App'),
+        title: const Text("Todo App"),
       ),
       body: ListView.builder(
-          itemCount: todoList.length + 1,
-          itemBuilder: (BuildContext context, int index) {
-            if (index == todoList.length) {
-              return createTextArea();
-            } else {
-              var title = todoList[index];
-              return createTodoCard(title);
-            }
-          }),
+        itemCount: todoList.length + 1,
+        itemBuilder: (BuildContext context, int index) {
+          if (index == todoList.length) {
+            return _createTextArea();
+          } else {
+            var title = todoList[index];
+            return _createTodoCard(title, index);
+          }
+        },
+      ),
     );
   }
 
@@ -58,7 +59,7 @@ class TextInputWidgetState extends State {
     _controller.dispose();
   }
 
-  Widget createTodoCard(String title) {
+  Widget _createTodoCard(String title, int index) {
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -67,15 +68,13 @@ class TextInputWidgetState extends State {
       child: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
-          ListTile(
-            title: Text(title),
-          ),
+          ListTile(title: Text(title)),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ElevatedButton(
                 onPressed: () {
-                  //完了したときの処理
+                  _complete(index);
                 },
                 child: const Text('完了'),
               ),
@@ -83,22 +82,25 @@ class TextInputWidgetState extends State {
                 width: 10.0,
               ),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFFF0000),
+                ),
                 onPressed: () {
-                  //削除したときの処理
+                  _delete(index);
                 },
                 child: const Text('削除'),
               ),
               const SizedBox(
                 width: 10.0,
-              )
+              ),
             ],
-          )
+          ),
         ],
       ),
     );
   }
 
-  Widget createTextArea() {
+  Widget _createTextArea() {
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -111,30 +113,49 @@ class TextInputWidgetState extends State {
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: TextField(
               controller: _controller,
-              decoration: const InputDecoration(hintText: '入力してください'),
+              decoration: const InputDecoration(
+                hintText: '入力してください',
+                hintStyle: TextStyle(color: Color(0x0ffd3d3d3)),
+              ),
               onChanged: (String value) {
                 print(value);
               },
-              onSubmitted: (String value) {
-                setState(() {
-                  if (value.isEmpty == false) {
-                    todoList.add(value);
-                    _controller.clear();
-                  }
-                });
-              },
+              onSubmitted: _submitTodo,
             ),
           ),
           Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
             child: ElevatedButton(
-              onPressed: () {},
-              child: const Text('カードを追加する'),
+              onPressed: () {
+                _submitTodo(_controller.text);
+              },
+              child: const Center(child: Text('カードを追加する')),
             ),
-          )
+          ),
         ],
       ),
     );
+  }
+
+  void _submitTodo(String title) {
+    setState(() {
+      if (title.isEmpty == false) {
+        todoList.add(title);
+        _controller.clear();
+      }
+    });
+  }
+
+  void _complete(int index) {
+    setState(() {
+      todoList.removeAt(index);
+    });
+  }
+
+  void _delete(int index) {
+    setState(() {
+      todoList.removeAt(index);
+    });
   }
 }
